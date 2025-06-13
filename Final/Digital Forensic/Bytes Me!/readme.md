@@ -14,7 +14,7 @@ I was experimenting with a new steganography technique using Python. To be safe,
 
 As if something is hidden… or maybe too visible?
 
-Figure out what happened — and uncover the technique I was learning.
+Figure out what happened and uncover the technique I was learning.
 
 ## Solver
 
