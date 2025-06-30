@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}🥬 Pasar Sayur Segar{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ url_for('home') }}" class="logo">🥬 Pasar Sayur Segar</a>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}">Beranda</a>
+                <a href="{{ url_for('view_cart') }}">🛒 Keranjang ({{ cart|length }})</a>
+                <a href="{{ url_for('admin') }}">👤 Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Pasar Sayur Segar. Sayuran segar langsung dari kebun ke meja Anda!</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Pencarian - Pasar Sayur Segar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{{ url_for('home') }}" class="logo">🥬 Pasar Sayur Segar</a>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}">Beranda</a>
+                <a href="{{ url_for('view_cart') }}">🛒 Keranjang</a>
+                <a href="{{ url_for('admin') }}">👤 Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="search-header">
+                <h1>🔍 Hasil Pencarian</h1>
+            </div>
+            
+            <div class="result-info">
+                <h3>{{ result_message|safe }}</h3>
+                <a href="{{ url_for('home') }}" class="btn btn-secondary">← Kembali ke Beranda</a>
+            </div>
+            
+            {% if found_vegetables %}
+            <div class="vegetables-grid">
+                {% for key, veggie in found_vegetables.items() %}
+                <div class="veggie-card">
+                    <div class="veggie-image">🥕</div>
+                    <h3>{{ veggie.name }}</h3>
+                    <p class="veggie-description">{{ veggie.description }}</p>
+                    <div class="price">Rp {{ "{:,}".format(veggie.price) }} / kg</div>
+                    <div class="stock">Stok: {{ veggie.stock }} kg</div>
+                    <a href="{{ url_for('add_to_cart', veggie_key=key) }}" class="btn btn-primary">Tambah ke Keranjang</a>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Pasar Sayur Segar. Sayuran segar langsung dari kebun ke meja Anda!</p>
+        </div>
+    </footer>
+</body>
+</html>

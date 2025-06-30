@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel - Pasar Sayur Segar{% endblock %}
+
+{% block content %}
+<div class="admin-panel">
+    <h1>👤 Panel Admin</h1>
+    <div class="alert alert-warning">
+        <strong>⚠️ Akses Terbatas!</strong><br>
+        Halaman ini hanya untuk administrator. Silakan login terlebih dahulu.
+    </div>
+    
+    <div class="admin-info">
+        <h3>Informasi Sistem</h3>
+        <ul>
+            <li>Status Server: ✅ Online</li>
+            <li>Total Sayuran: {{ vegetables|length }}</li>
+            <li>Database: SQLite (sayuran.db)</li>
+            <li>Version: 1.0.0</li>
+        </ul>
+    </div>
+    
+    <div class="admin-actions">
+        <button class="btn btn-primary" disabled>📊 Lihat Laporan</button>
+        <button class="btn btn-secondary" disabled>⚙️ Pengaturan</button>
+        <button class="btn btn-danger" disabled>🔒 Logout</button>
+    </div>
+    
+    <div class="admin-note">
+        <p><em>Hint: Mungkin ada cara lain untuk mengakses informasi sistem... 🤔</em></p>
+    </div>
+</div>
+{% endblock %}

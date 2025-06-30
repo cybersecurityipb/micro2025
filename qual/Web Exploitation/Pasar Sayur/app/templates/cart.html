@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Keranjang Belanja - Pasar Sayur Segar{% endblock %}
+
+{% block content %}
+<div class="cart-header">
+    <h1>🛒 Keranjang Belanja</h1>
+</div>
+
+{% if cart %}
+    <div class="cart-items">
+        {% for item in cart %}
+        <div class="cart-item">
+            <div class="item-info">
+                <h4>{{ item.name }}</h4>
+            </div>
+            <div class="item-price">
+                Rp {{ "{:,}".format(item.price) }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="cart-total">
+        <h2>Total Belanja: Rp {{ "{:,}".format(total) }}</h2>
+    </div>
+    
+    <div class="cart-actions">
+        <a href="{{ url_for('home') }}" class="btn btn-secondary">← Lanjutkan Belanja</a>
+        <a href="{{ url_for('clear_cart') }}" class="btn btn-danger">🗑️ Kosongkan Keranjang</a>
+        <button class="btn btn-primary">💳 Checkout</button>
+    </div>
+{% else %}
+    <div class="empty-cart">
+        <h3>Keranjang Anda kosong</h3>
+        <p>Silakan tambahkan sayuran ke keranjang terlebih dahulu.</p>
+        <a href="{{ url_for('home') }}" class="btn btn-primary">🛒 Mulai Belanja</a>
+    </div>
+{% endif %}
+{% endblock %}

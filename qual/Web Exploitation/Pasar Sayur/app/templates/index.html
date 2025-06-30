@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero">
+    <h1>🥬 Selamat Datang di Pasar Sayur Segar</h1>
+    <p>Sayuran segar langsung dari kebun ke meja Anda!</p>
+</div>
+
+<div class="search-section">
+    <h3>🔍 Cari Sayuran Favorit Anda</h3>
+    <p>Ketik nama sayuran yang ingin Anda cari:</p>
+    <form action="{{ url_for('search') }}" method="POST" class="search-form">
+        <input type="text" name="query" placeholder="Contoh: tomat, wortel, bayam..." class="search-input" required>
+        <button type="submit" class="btn btn-primary">Cari Sayuran</button>
+    </form>
+    <div class="alert alert-info">
+        <strong>💡 Tips:</strong> Gunakan pencarian untuk menemukan sayuran yang tersedia di toko kami!
+    </div>
+</div>
+
+<h2>🛒 Sayuran Tersedia</h2>
+<div class="vegetables-grid">
+    {% for key, veggie in vegetables.items() %}
+    <div class="veggie-card">
+        <div class="veggie-image">🥕</div>
+        <h3>{{ veggie.name }}</h3>
+        <p class="veggie-description">{{ veggie.description }}</p>
+        <div class="price">Rp {{ "{:,}".format(veggie.price) }} / kg</div>
+        <div class="stock">Stok: {{ veggie.stock }} kg</div>
+        <a href="{{ url_for('add_to_cart', veggie_key=key) }}" class="btn btn-primary">Tambah ke Keranjang</a>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="text-center">
+    <a href="{{ url_for('view_cart') }}" class="btn btn-secondary btn-large">🛒 Lihat Keranjang ({{ cart|length }} item)</a>
+</div>
+{% endblock %}
