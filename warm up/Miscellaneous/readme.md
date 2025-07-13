@@ -12,7 +12,7 @@ Miscellaneous
 
 Yesterday I just saw a post about the competitions in ITFEST 2025 on one of the social media platforms but now I only remember CTF can you tell me if there are any other competitions?
 
-**Note:** Messages are wrapped in ITFEST25 flag format and separate each word with underscore (_).
+**Note:** Messages are written in lowercase wrapped in ITFEST25 flag format and separating each word with an underscore (_).
 
 ## Solver
 
