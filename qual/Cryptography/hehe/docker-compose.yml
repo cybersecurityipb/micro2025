@@ -1,0 +1,8 @@
+services:
+  hehe:
+    container_name: hehe
+    network_mode: bridge
+    restart: unless-stopped
+    build: .
+    ports:
+      - "10001:10001"
