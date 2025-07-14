@@ -1,4 +1,4 @@
-# HE
+# hehe
 
 ## Author
 
@@ -13,6 +13,10 @@ Cryptography
 Homomorphic Encryption (HE) is a form of encryption that allows computations to be performed on encrypted data without first having to decrypt it. This challenge is a simple implementation of HE where you just need to "get" the flag from the server by implementing a "BFVRNS" scheme using Python's openFHE library (version 1.2.3.0.24.4).
 
 https://xx.xx.xx.xx:yyyy (POST request only)
+
+## Attachment(s)
+
+- `server.py`
 
 ## Solver
 
@@ -125,7 +129,7 @@ def BFVRNS_decrypt_vec(cc, sk, vec_ct) -> List:
 	"""
 	try:
 		vec_pt = cc.Decrypt(sk, vec_ct)
-		vec = vec_pt.GetPackedValue()
+		vec = vec_pt.GetPackedValue()	# Default length: 8192
 		return vec
 
 	except Exception as e:
@@ -138,7 +142,7 @@ vec = [0 for _ in range(128)]
 
 def get_flag(vec: List, server_url: str) -> List:
 	"""
-	Sends a vector to the server to be added with SERVER_VAL
+	Sends a vector to the server to be added with FLAG
 	"""
 	try:
 		# 1. Encrypt vector
@@ -156,15 +160,14 @@ def get_flag(vec: List, server_url: str) -> List:
 
 		# 3. Decrypt result
 		result_ct = deserialize_ct_from_base64(result_ct_ser)
-		result = cc.Decrypt(keys.secretKey, result_ct)
-		result_vec = result.GetPackedValue()	# Default length: 8192
+		result_vec = BFVRNS_decrypt_vec(cc, keys.secretKey, result_ct)
 
 		return result_vec
 
 	except Exception as e:
 		raise RuntimeError(f"Error: {e}")
 
-msg = get_flag(vec, "http://127.0.0.1:5000")
+msg = get_flag(vec, "http://127.0.0.1:10001")
 flag = "".join([chr(i) for i in msg])
 
 print(flag)

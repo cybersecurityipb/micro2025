@@ -103,7 +103,7 @@ def BFVRNS_decrypt_vec(cc, sk, vec_ct) -> List:
 	"""
 	try:
 		vec_pt = cc.Decrypt(sk, vec_ct)
-		vec = vec_pt.GetPackedValue()
+		vec = vec_pt.GetPackedValue()	# Default length: 8192
 		return vec
 
 	except Exception as e:
@@ -116,7 +116,7 @@ vec = [0 for _ in range(128)]
 
 def get_flag(vec: List, server_url: str) -> List:
 	"""
-	Sends a vector to the server to be added with SERVER_VAL
+	Sends a vector to the server to be added with FLAG
 	"""
 	try:
 		# 1. Encrypt vector
@@ -134,8 +134,7 @@ def get_flag(vec: List, server_url: str) -> List:
 
 		# 3. Decrypt result
 		result_ct = deserialize_ct_from_base64(result_ct_ser)
-		result = cc.Decrypt(keys.secretKey, result_ct)
-		result_vec = result.GetPackedValue()	# Default length: 8192
+		result_vec = BFVRNS_decrypt_vec(cc, keys.secretKey, result_ct)
 
 		return result_vec
 
