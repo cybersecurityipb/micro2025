@@ -27,7 +27,7 @@ man just do your basic forensic stuff, i don't really care
 - Hintnya adalah `Just match all of the bodies with the head` artinya headnya adalah chunk-chunk sebelum IDAT dan bodynya adalah chunk IDAT
 - Masing-masing IDAT pada `chall.png` dipasangkan dengan head pada file itu sendiri, sehingga akan terdapat 4 file PNG
 - Gabungkan semua file PNG secara berurutan dan visual, maka akan mendapatkan gambar hitam putih yang mana itu adalah biner
-- Memahami whatisdis.py akan memberikan hint untuk langkah selanjutnya
+- Memahami 'whatisdis.py' akan memberikan hint untuk langkah selanjutnya
 
 **Part 3**
 - Dari file `whatisdis.py` akan ditemukan bahwa 1 kotak/bit berwarna hitam/putih mewakili 10x10 pixel
