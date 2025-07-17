@@ -1,8 +1,8 @@
-# bad-pdf
+# cake
 
 ## Author
 
-k1nomi
+asburg
 
 ## Categories
 
@@ -10,39 +10,31 @@ Digital Forensic
 
 ## Description
 
-I just downloaded a paper for my AI research, but it looks suspicious. Can you check if it is malicious or not for me?
+man just do your basic forensic stuff, i don't really care
 
 ## Attachment(s)
 
-- `paper.pdf`
+- `chall.png`
 
 ## Solver
 
 **Part 1**
-
-- Jika dibuka di browser, atau cek lewat `exiftool`, tampak bahwa file PDF ini memiliki title berupa text base64 yang sangat panjang
-- Jika text base64 tersebut di-decode, maka akan menjadi kode JavaScript yang di-obfuscate
-- Deobfuscate menggunakan [obf-io.deobfuscate.io](https://obf-io.deobfuscate.io/) dan jalankan kodenya
-- Didapatkan string `[Part 1: ITFEST25{b3_c4r3ful_wh3n] [Part 2 Hint: JS, huh? Why put a lot of trouble putting it on the document title when you can embed it directly on the PDF?]`
+- Ketika file dibuka di Apperisolve atau gunakan binwalk akan terdapat sebuah file zip
+- Unzip filenya maka akan mendapatkan dua buah file yaitu `README.txt` dan `whatisdis.py`
+- Membaca `README.txt` akan memberikan hint untuk langkah selanjutnya
 
 **Part 2**
-
-- Gunakan `pdf-parser` untuk menganalisis PDF. Tool tersebut dapat diunduh [di sini](https://blog.didierstevens.com/programs/pdf-tools/). Menggunakan tool PDF lain juga bisa.
-- Jalankan command `python3 pdf-parser.py paper.pdf` dan `python3 pdf-parser.py paper.pdf --stats` untuk melihat struktur PDF serta memeriksa adanya object "JavaScript" yang ter-embed di dalam PDF
-- Ikuti alur objectnya. Didapatkan bahwa JavaScript ada di object No. 1, yang me-reference object No. 4. Pada object No. 4, terdapat object stream.
-- Kita bisa mengekstrak isi stream dengan command `python3 pdf-parser.py paper.pdf --object 4 -f`
-- Sebuah kode JS yang obfuscated pun lagi-lagi didapatkan.
-- Dari kode ini, kita mendapatkan string `[Part 2: _d0wnl0ad1ng_PDFs_n3xt_t] [Part 3 Hint: Isn't it unusual for this document to have no images? Again, maybe it's embedded?]`
+- Hintnya adalah `Just match all of the bodies with the head` artinya headnya adalah chunk-chunk sebelum IDAT dan bodynya adalah chunk IDAT
+- Masing-masing IDAT pada `chall.png` dipasangkan dengan head pada file itu sendiri, sehingga akan terdapat 4 file PNG
+- Gabungkan semua file PNG secara berurutan dan visual, maka akan mendapatkan gambar hitam putih yang mana itu adalah biner
+- Memahami whatisdis.py akan memberikan hint untuk langkah selanjutnya
 
 **Part 3**
-
-- Hint pada Part 2 merujuk pada "EmbeddedFile" yang mungkin ada pada PDF. 
-- Menjalankan command `python3 pdf-parser.py paper.pdf --stats`, dapat diketahui bahwa EmbeddedFile terdapat di dalam objek No. 3
-- Maka dari itu, bisa kita ekstrak dengan command `python3 pdf-parser.py paper.pdf --object 3 -f`
-- Dari sini, kita mendapatkan teks base64 yang sangat panjang. Jika di-decode, hasilnya adalah sebuah gambar. Dari gambar tersebut, kita mendapatkan string `[Part 3: im3_it_m1ght_b3_malwar3}] [You got it all, Congrats!!! :D]`
+- Dari file `whatisdis.py` akan ditemukan bahwa 1 kotak/bit berwarna hitam/putih mewakili 10x10 pixel
+- buat kode untuk mengembalikan supaya 10x10 pixel itu diconvert jadi 0 jika berwarna hitam dan 1 jika berwarna putih
+- Jika dilakukan dengan benar maka flagnya pun muncul
 
 ## Flag
-
 ```
-ITFEST25{b3_c4r3ful_wh3n_d0wnl0ad1ng_PDFs_n3xt_tim3_it_m1ght_b3_malwar3}
+ITFEST25{a1nt_p13c3_0f_c4k3_m4tch1n9_up_4ll_0f_th3_b0dy5_w1th_4_h34d_d4mn1t_15t9}
 ```
