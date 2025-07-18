@@ -2,8 +2,8 @@ from Crypto.Util.number import getPrime, bytes_to_long, inverse
 import random
 flag = b"{REDACTED}"
 m = bytes_to_long(flag)
-p = getPrime(128)
-q = getPrime(128)
+p = getPrime(512)
+q = getPrime(512)
 n = p * q
 phi = (p - 1) * (q - 1)
 bound = int(n**0.25) // 9
