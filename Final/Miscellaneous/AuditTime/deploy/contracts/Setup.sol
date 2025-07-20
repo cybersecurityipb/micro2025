@@ -20,6 +20,8 @@ contract Setup {
 
     bool public hasClaimed = false;
 
+    address player;
+
     constructor() payable {
         zfn = new Token("zafin", "ZFN");
         nfz = new Token("nfz", "NFZ");
@@ -53,9 +55,10 @@ contract Setup {
         hasClaimed = true;
         zfn.transfer(msg.sender, 1);
         nfz.transfer(msg.sender, 1);
+        player = msg.sender;
     }
 
     function isSolved() external view returns (bool) {
-        return (zfn.balanceOf(msg.sender) == 950_000 ether) && (nfz.balanceOf(msg.sender) == 950_000 ether);
+        return (zfn.balanceOf(player) == 950_000 ether) && (nfz.balanceOf(player) == 950_000 ether);
     }
 }
