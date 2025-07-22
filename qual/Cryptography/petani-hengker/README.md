@@ -1,4 +1,4 @@
-# petani-hengker
+# petani-cry
 Created by : `ji4xuu`
 ## Deskripsi
 "Jadi gini, probset nih skill issue, tapi malah disuruh buat soal crypto, yaudahlah, udek-udek aja... mohon maaf kalau kurang susah :)"
