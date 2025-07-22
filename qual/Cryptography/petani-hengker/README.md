@@ -11,5 +11,5 @@ Created by : `ji4xuu`
 ## Flag
 
 ```
-ITFEST25{HE_c4n_b3_us3d_t0_pr0t3ct_d4t4_pr1v4cy_0n_ML_m0d3ls}
+ITFEST{t4n4m_t4namm_Ub1111_t4k_p3rLu_1nT3rn_or4n9_or4n9_IT_ud4h_d0_aja}
 ```
