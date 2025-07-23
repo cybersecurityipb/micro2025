@@ -1,0 +1,116 @@
+<?php
+if (ob_get_level() === 0) {
+    ob_start();
+}
+
+require_once __DIR__ . '/vendor/autoload.php';
+use setasign\Fpdi\Fpdi;
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: index.php?error=' . urlencode('Invalid request method.'));
+    exit;
+}
+
+if (empty($_FILES['pdf_file']) || $_FILES['pdf_file']['error'] !== UPLOAD_ERR_OK) {
+    header('Location: index.php?error=' . urlencode('File upload failed.'));
+    exit;
+}
+
+$headerUrl = $_POST['header_url'] ?? '';
+$parts = parse_url($headerUrl);
+if (!empty($parts['scheme']) && !in_array(strtolower($parts['scheme']), ['http', 'https'], true)) {
+    header('Location: index.php?error=' . urlencode('Only HTTP/S URLs are allowed.'));
+    exit;
+}
+
+$hosts = gethostbynamel($parts['host']);
+foreach ($hosts as $ip) {
+    if (filter_var(
+            $ip,
+            FILTER_VALIDATE_IP,
+            FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+        ) === false
+    ) {
+        header('Location: index.php?error=' . urlencode('Disallowed target host.'));
+        exit;
+    }
+}
+
+$uploadDir = __DIR__ . '/uploads/';
+if (!is_dir($uploadDir) && !mkdir($uploadDir, 0777, true)) {
+    header('Location: index.php?error=' . urlencode('Cannot create uploads directory.'));
+    exit;
+}
+if (!is_writable($uploadDir)) {
+    header('Location: index.php?error=' . urlencode('Uploads directory is not writable.'));
+    exit;
+}
+
+$origName = basename($_FILES['pdf_file']['name']);
+$pdfName  = preg_replace('/[^a-zA-Z0-9_\-\.]/', '_', $origName);
+$pdfPath  = $uploadDir . $pdfName;
+
+if (!move_uploaded_file($_FILES['pdf_file']['tmp_name'], $pdfPath)) {
+    header('Location: index.php?error=' . urlencode('Failed to save uploaded PDF.'));
+    exit;
+}
+
+$finfo = new finfo(FILEINFO_MIME_TYPE);
+$mime  = $finfo->file($pdfPath);
+if ($mime !== 'application/pdf') {
+    header('Location: index.php?error=' . urlencode('Uploaded file is not a valid PDF.'));
+    exit;
+}
+
+$cli = 'curl -sS -w "\n%{content_type}" ' . escapeshellarg($headerUrl);
+exec($cli, $curlOutput, $curlStatus);
+
+if ($curlStatus !== 0 || empty($curlOutput)) {
+    @unlink($pdfPath);
+    header('Location: index.php?error=' . urlencode('Failed to fetch header URL.'));
+    exit;
+}
+
+$contentType = array_pop($curlOutput);
+$imageData   = implode("\n", $curlOutput);
+
+
+if (stripos($contentType, 'image/') !== 0) {
+    @unlink($pdfPath);
+    header('Location: index.php?error=' . urlencode('Header URL is not a valid image.'));
+    exit;
+}
+
+$ext       = explode('/', $contentType)[1] ?? 'png';
+$headerImg = $uploadDir . 'hdr_' . uniqid() . '.' . $ext;
+file_put_contents($headerImg, $imageData);
+
+try {
+    $pdf   = new Fpdi();
+    $pages = $pdf->setSourceFile($pdfPath);
+
+    for ($i = 1; $i <= $pages; $i++) {
+        $tpl  = $pdf->importPage($i);
+        $size = $pdf->getTemplateSize($tpl);
+
+        $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+        $pdf->useTemplate($tpl);
+
+        $imgWidth  = $size['width'];
+        $imgHeight = $size['height'] * 0.1;
+        $pdf->Image($headerImg, 0, 5, $imgWidth, $imgHeight);
+    }
+
+    if (ob_get_length()) {
+        ob_end_clean();
+    }
+    $outName = 'headered_' . pathinfo($pdfName, PATHINFO_FILENAME) . '.pdf';
+    $pdf->Output('D', $outName);
+
+} catch (Exception $e) {
+    header('Location: index.php?error=' . urlencode('PDF error: ' . $e->getMessage()));
+} finally {
+    @unlink($pdfPath);
+    @unlink($headerImg);
+    exit;
+}

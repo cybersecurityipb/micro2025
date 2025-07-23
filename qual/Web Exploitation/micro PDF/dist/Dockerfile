@@ -1,0 +1,35 @@
+FROM php:8.3-fpm AS app
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      libfreetype6-dev \
+      libjpeg62-turbo-dev \
+      libpng-dev \
+      libzip-dev \
+      curl \
+      unzip \
+ && docker-php-ext-configure gd --with-freetype --with-jpeg \
+ && docker-php-ext-install gd zip pdo_mysql \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /var/www/html
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY composer.json composer.lock* ./
+
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
+
+COPY . .
+COPY flag.txt ./flag.txt
+
+RUN set -eux; \
+    rand_dir="/var/www/html/$(head -c 12 /dev/urandom | base64 | tr -dc a-zA-Z0-9 | head -c 10)"; \
+    mkdir -p "$rand_dir"; \
+    cp flag.txt "$rand_dir/flag.txt"; \
+    rm -f ./flag.txt
+
+RUN chown -R www-data:www-data /var/www/html
+
+EXPOSE 9000
+CMD ["php-fpm"]
