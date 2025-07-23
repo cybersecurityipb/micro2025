@@ -12,6 +12,8 @@ Digital Forensic
 
 I hid a secret message in this image file, can you find it?
 
+**Revisi Attachment:** [Download here](https://drive.google.com/file/d/1GA0GCNvPBC6QINEO48_Dr1KIe9tdSfKt/view?usp=sharing)
+
 ## Solver
 
 ### Langkah 1: Analisis Hex File
