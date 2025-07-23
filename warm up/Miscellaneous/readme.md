@@ -10,9 +10,15 @@ Miscellaneous
 
 ## Description
 
-Yesterday I just saw a post about the competitions in ITFEST 2025 on one of the social media platforms but now I only remember CTF can you tell me if there are any other competitions?
+Yesterday I saw a social media post titled **WHAT'S ON IT FEST 2025** showing a list of competitions held during the event. Now, I can only remember CTF. Can you help me recall the others?
 
-**Note:** Messages are written in lowercase wrapped in ITFEST25 flag format and separating each word with an underscore (_).
+**Note**:
+
+* Use flag format: **ITFEST25{...}**
+
+* All lowercase
+
+* Use underscores (_) between words
 
 ## Solver
 
