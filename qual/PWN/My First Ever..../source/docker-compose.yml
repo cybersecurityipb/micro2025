@@ -1,0 +1,5 @@
+services:
+  my-first-ever:
+    build: .
+    ports:
+      - 1470:8000
