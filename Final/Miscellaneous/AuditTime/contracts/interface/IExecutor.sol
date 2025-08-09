@@ -3,7 +3,6 @@
 pragma solidity ^0.8.25;
 
 import "../library/Utils.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 interface IExecutor {
     /**

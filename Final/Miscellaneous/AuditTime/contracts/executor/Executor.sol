@@ -8,6 +8,7 @@ import "../interface/IExecutor.sol";
 import "../interface/IAdapter.sol";
 import {UniversalERC20} from "../library/UniversalERC20.sol";
 import "../library/SignedDecimalMath.sol";
+import "../library/IERC20.sol";
 
 /**
  * @title Executor
