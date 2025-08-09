@@ -10,7 +10,8 @@ services:
       - FLAG=${FLAG}
       - HTTP_PORT=8545
       - LAUNCHER_PORT=8080
-      - ENV=production
+      # - ENV=production
+      - EVM_VERSION=${EVM_VERSION}
       # - DISABLE_TICKET=true
     deploy:
       resources:
