@@ -1,0 +1,6 @@
+services:
+  terpaksa:
+    build: .
+    image: terpaksa:latest
+    ports:
+      - "7001:1337"

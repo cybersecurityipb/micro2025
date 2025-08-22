@@ -1,6 +1,6 @@
 # patpat
 
-modal compile ulang, but if i were you, i might be skipping this chal cus thats a good strat.
+Another soal kepepet, sorry i guest.
 
 `Author: yqroo`
 
