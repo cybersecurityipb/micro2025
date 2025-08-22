@@ -9,5 +9,5 @@ Created by : `ji4xuu`
 ## Flag
 
 ```
-ITFEST25{dpr_kocak_joget_doang_kagak_kerja_apa_apa_mending_gw_jadi_dpr}
+'ITFEST25{dpr_kocak_yapping_doang_kagak_jelas_mending_gw_jadi_dpr}'
 ```
