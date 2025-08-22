@@ -9,5 +9,5 @@ Created by : `ji4xuu`
 ## Flag
 
 ```
-ITFEST{t4n4m_t4namm_Ub1111_t4k_p3rLu_1nT3rn_or4n9_or4n9_IT_ud4h_d0_aja}
+ITFEST25{dpr_kocak_joget_doang_kagak_kerja_apa_apa_mending_gw_jadi_dpr}
 ```
