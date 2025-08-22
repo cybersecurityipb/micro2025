@@ -35,7 +35,7 @@ n = key.n
 e = key.e
 c = 11572827139702219033043035156209321984649043642687945489684374639144134855239045455401365840335200319431397265510247847879366431001310282534181991867887006730414349464855348037462461686586131560893810921430475809676596608373928296023798346933224140510024488550824927633381142868145643454788744736355735531314162711739291327892715385882031310818076132068084018139626670727270122198151099370618059178823978999684348061857252978029799538241107391344123608586172254132992845845965216660982833551027542326829425336789327127330646599960659747127432752591231847665640700385594193573057036900001180936013113371595072363969803
 
-# Solver dari soal qual 'loser'
+# Solver dari soal qual 'loser' [https://github.com/cybersecurityipb/micro2025/blob/main/qual/Cryptography/loser/solver.sage]
 def wiener(n, e):
     n = Integer(n)
     e = Integer(e)
@@ -73,7 +73,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 
 enc_messages = ['77fe6c0e51dcd60409cae008df37618dece2acbd78a0f863fc83f4e5d9fea94d7478ad1b539edbd8f733332d73ad6de178d27f9dbe9c38238faa9a10d82ce8351fa96c6081821e5176373e5488305d0d3671dfa332958454f792f681cc732620639da36c06d653b8806eb1f38e6a8ec3', '06a36908fc4e09d1b6f9d393a3ca6249976f357ea3b46b37027e97b92720d8fd26bef463e8a35d07b6b79ea3b28e506ddc68100529a3efc056e342ad688ce49ddbe8d03a6bb2249343bceec636e1a0780e8f502894c4cc483f322eabbcb5f05b6377096d4d0b74c476a582e0dc135797', '0e0695f59aab63afb98b1804721ea369ed803a04faad911132b5feb43067273a5247105684a95d13437e320761f719fca8be4a3070c524ba4e6f06e1fb80e898', '1e0a86c6140d02402691e3f4d0169000ac2bba69600816ef8cfefc7a541653d7d69d59e53334f713a14635b51a0667beb69c29ecaa84066c6729f9af0d3119aeb9e7c18be1e682081ad53e00b76713bd3a183cd8594a47c943ea464602a53603']
-enc_attachments = ['secret.png.enc', 'secret.pcapng.enc']
+enc_attachments = ['secret.png.enc', 'secret.zip.enc']
 
 # AES decryption setup (AES-128, CBC, IV in first block)
 KEY = bytes.fromhex('7f969cb91bf7b1a103dc544982dff07e')
@@ -97,21 +97,21 @@ b"Thank you for the valuable lead. I'll see you tomorrow in office."
 
 # Decrypting Attachments
 for enc_att in enc_attachments:
-    hex_ct = open(enc_att, "r").read()
+    hex_ct = open("attachments/" + enc_att, "r").read()
     plain_att = decrypt(hex_ct, KEY)
-    out_file = open(enc_att[:-4], "wb")
+    out_file = open("attachments/" + enc_att[:-4], "wb")
     out_file.write(plain_att)
-    print(f"Decrypted {enc_att} and saved as {enc_att[:-4]}")
+    print(f"Decrypted {enc_att} and saved as {"attachments/" + enc_att[:-4]}")
 
 '''
-Decrypted secret.png.enc and saved as secret.png
-Decrypted secret.pcapng.enc and saved as secret.pcapng
+Decrypted secret.png.enc and saved as attachments/secret.png
+Decrypted secret.zip.enc and saved as attachments/secret.zip
 '''
 ```
 
 ### 2. Analisis `secret.pcapng`
 
-Setelah melakukan dekripsi pada sisa packet, kita mendapatkan dua attachment, yakni `secret.png` dan `secret.pcapng`. Dari konteks komunikasinya, jelas bahwa `secret.png` tidak ada hubungannya dengan apa yang ingin kita cari, yakni "stream of confidential information". Maka dari itu, langsung saja lakukan analisis pada `secret.pcapng`.
+Setelah melakukan dekripsi pada sisa packet, kita mendapatkan dua attachment, yakni `secret.png` dan `secret.pcapng` (didapatkan dari `secret.zip`). Dari konteks komunikasinya, jelas bahwa `secret.png` tidak ada hubungannya dengan apa yang ingin kita cari, yakni "stream of confidential information". Maka dari itu, langsung saja lakukan analisis pada `secret.pcapng`.
 
 Karena jelas bahwa file ini berisikan packet-packet dari sebuah streaming, maka protokol yang paling umum untuk digunakan adalah RTP/RTSP. Kita bisa konfigurasi Wireshark untuk mendeteksi protokol ini melalui opsi "Edit >> Preferences >> Protocol >> RTSP". Packet-packet awal RTSP menunjukkan bahwa data streaming di-encode menggunakan encoding video "H264". Maka dari itu, langkah paling logis yang bisa kita lakukan adalah mengekstraksi data H264 yang ada dan memainkan videonya.
 
@@ -151,7 +151,7 @@ def extract_frames(video_path, output_dir="frames/"):
     cap.release()
     print(f"Extracted {frame_count} frames to '{output_dir}'")
 
-# Example usage
+# Extract frames
 extract_frames("output.mp4")
 ```
 
@@ -166,4 +166,3 @@ Thank you for tuning in. Here is your flag: ITFEST25{smtp_and_rtsp_network_analy
 ```
 ITFEST25{smtp_and_rtsp_network_analysis}
 ```
-
