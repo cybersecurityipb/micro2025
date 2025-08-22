@@ -1,0 +1,13 @@
+# berisik
+Created by : `ji4xuu`
+## Deskripsi
+"Klasik, old but gold"
+
+## Attachment(s)
+- [chal.py](chall.py)
+
+## Flag
+
+```
+ITFEST{t4n4m_t4namm_Ub1111_t4k_p3rLu_1nT3rn_or4n9_or4n9_IT_ud4h_d0_aja}
+```
