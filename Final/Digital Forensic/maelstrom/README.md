@@ -18,7 +18,7 @@ John has captured a stream of confidential information and mailed it to his coll
 
 ## Solver
 
-1. Analisis `maelstrom.pcapng` & Dekripsi Packet
+### 1. Analisis `maelstrom.pcapng` & Dekripsi Packet
 
 Amati bahwa pada file capture, terdapat komunikasi SMTP antara John dan Mark. Sebagian packet berupa plaintext dan sebagian lainnya terenkripsi. Dari komunikasi yang tidak terenkripsi, kita mendapatkan sebuah public key RSA dan cara untuk mengenkripsi packet-packet lainnya. Dapat diketahui dari nilai `n` dan `e` nya bahwa public key pemberian John vulnerable terhadap Wiener attack. Maka dari itu, kita bisa memanfaatkan solver yang sudah dibuat pada soal qual `loser` untuk mendapatkan key AES yang digunakan.
 
@@ -35,7 +35,7 @@ n = key.n
 e = key.e
 c = 11572827139702219033043035156209321984649043642687945489684374639144134855239045455401365840335200319431397265510247847879366431001310282534181991867887006730414349464855348037462461686586131560893810921430475809676596608373928296023798346933224140510024488550824927633381142868145643454788744736355735531314162711739291327892715385882031310818076132068084018139626670727270122198151099370618059178823978999684348061857252978029799538241107391344123608586172254132992845845965216660982833551027542326829425336789327127330646599960659747127432752591231847665640700385594193573057036900001180936013113371595072363969803
 
-Solver dari soal qual 'loser'
+# Solver dari soal qual 'loser'
 def wiener(n, e):
     n = Integer(n)
     e = Integer(e)
@@ -109,13 +109,13 @@ Decrypted secret.pcapng.enc and saved as secret.pcapng
 '''
 ```
 
-2. Analisis `secret.pcapng`
+### 2. Analisis `secret.pcapng`
 
 Setelah melakukan dekripsi pada sisa packet, kita mendapatkan dua attachment, yakni `secret.png` dan `secret.pcapng`. Dari konteks komunikasinya, jelas bahwa `secret.png` tidak ada hubungannya dengan apa yang ingin kita cari, yakni "stream of confidential information". Maka dari itu, langsung saja lakukan analisis pada `secret.pcapng`.
 
 Karena jelas bahwa file ini berisikan packet-packet dari sebuah streaming, maka protokol yang paling umum untuk digunakan adalah RTP/RTSP. Kita bisa konfigurasi Wireshark untuk mendeteksi protokol ini melalui opsi "Edit >> Preferences >> Protocol >> RTSP". Packet-packet awal RTSP menunjukkan bahwa data streaming di-encode menggunakan encoding video "H264". Maka dari itu, langkah paling logis yang bisa kita lakukan adalah mengekstraksi data H264 yang ada dan memainkan videonya.
 
-3. Ekstrak data H264 dari pcapng
+### 3. Ekstrak data H264 dari pcapng
 
 Setelah melakukan sediki riset, dapat ditemukan bahwa data H264 bisa diekstrak dari Wireshark dengan mudah menggunakan plugin https://github.com/volvet/h264extractor/tree/master. Setelah melakukan instalasi dan mengonfigurasi protokol H264 lewat "Edit >> Preferences >> Protocol >> H264", kita bisa ekstrak datanya dan akan didapatkan sebuah file dengan ekstensi `.264`.
 
@@ -125,7 +125,7 @@ Berikutnya, file tersebut dapat dikonversi menggunakan `ffmpeg` ataupun tool onl
 $ ffmpeg -i video_2025mmdd-hhmmss.264 -c:v copy output.mp4
 ```
 
-4. Ekstrak frame dari video
+### 4. Ekstrak frame dari video
 
 Pada video, flagnya berupa frame-frame yang diputar secara cepat, di mana 1 frame berarti satu huruf. Untuk tahap ini sederhana saja. Frame bisa diekstrak baik menggunakan script Python maupun `ffmpeg`.
 
