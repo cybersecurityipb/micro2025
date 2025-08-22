@@ -1,4 +1,4 @@
-# berisik dan bantalan
+# berisik
 Created by : `ji4xuu`
 ## Deskripsi
 "Klasik, old but gold"
