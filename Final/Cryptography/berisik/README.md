@@ -4,7 +4,7 @@ Created by : `ji4xuu`
 "Klasik, old but gold"
 
 ## Attachment(s)
-- [chal.py](chall.py)
+- [chall.py](chall.py)
 
 ## Flag
 
