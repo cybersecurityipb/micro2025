@@ -6,7 +6,7 @@ from os import urandom
 from random import SystemRandom
 import json
 
-FLAG = 'ITFEST25{dpr_kocak_joget_doang_kagak_kerja_apa_apa_mending_gw_jadi_dpr}'
+FLAG = ''ITFEST25{dpr_kocak_yapping_doang_kagak_jelas_mending_gw_jadi_dpr}'
 rng = SystemRandom()
 
 class Challenge:
